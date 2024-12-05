@@ -1,0 +1,137 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package com.mycompany.videojuegolaberinto_c4h043.vista;
+
+import com.mycompany.videojuegolaberinto_c4h043.controlador.ControladorLaberinto;
+import com.mycompany.videojuegolaberinto_c4h043.modelo.AreaJuego;
+import com.mycompany.videojuegolaberinto_c4h043.modelo.Laberinto;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+
+/**
+ *
+ * @author mcalf
+ */
+public class GUILaberinto extends javax.swing.JFrame {
+    // Clase que representa la ventana principal del juego del laberinto.
+    // Extiende JFrame para proporcionar una interfaz gráfica.
+
+    private AreaJuego areaJuego; // Objeto que representa el área lógica del juego.
+    private JLabel lblTiempo; // Etiqueta para mostrar el tiempo restante.
+    private JLabel lblVidas; // Etiqueta para mostrar las vidas restantes.
+    private PanelJuego panelJuego; // Panel donde se dibuja el laberinto y el personaje.
+
+  // Constructor de la clase GUILaberinto.
+
+    public GUILaberinto(Laberinto laberinto) {
+        if (laberinto == null) { // Verifica que el objeto laberinto no sea nulo.
+            throw new IllegalArgumentException("Laberinto no puede ser nulo.");
+        }
+        initComponents(); // Inicializa los componentes generados automáticamente por NetBeans.
+
+        // Configuraciones adicionales para la ventana.
+        setTitle("Laberinto"); // Establece el título de la ventana.
+        setSize(800, 600); // Define el tamaño de la ventana.
+        setDefaultCloseOperation(EXIT_ON_CLOSE); // Configura la operación de cierre.
+        setLayout(new BorderLayout()); // Establece el diseño de la ventana.
+
+        // Crear y configurar el panel derecho.
+        JPanel panelDerecho = new JPanel(new BorderLayout());
+        // El panel derecho se podría utilizar para mostrar información adicional como tiempo y vidas.
+        add(panelDerecho, BorderLayout.EAST); // Añade el panel derecho al JFrame.
+
+        try {
+            // Inicializa el panel de juego y lo agrega al centro del JFrame.
+            PanelJuego panelJuego = new PanelJuego(null); // Crea un nuevo panel de juego sin controlador inicial.
+            add(panelJuego, BorderLayout.CENTER); // Añade el panel de juego al centro del JFrame.
+            this.areaJuego = new AreaJuego(laberinto.getMapa(), this); // Crea el área lógica del juego.
+
+            // Crea el controlador del laberinto y establece las relaciones.
+            ControladorLaberinto controladorLaberinto = new ControladorLaberinto(panelJuego, laberinto.getMapa(), this);
+            panelJuego.setControlador(controladorLaberinto); // Vincula el controlador con el panel de juego.
+
+            // Ajusta el diseño del contenido del JFrame.
+            getContentPane().setLayout(new BorderLayout());
+            getContentPane().add(panelJuego, BorderLayout.CENTER); // Añade el panel de juego al centro del contenido.
+        } catch (Exception ex) {
+            ex.printStackTrace(); // Muestra el error en la consola si ocurre una excepción.
+            // Muestra un mensaje de error al usuario si falla la inicialización.
+            JOptionPane.showMessageDialog(
+                this,
+                "Error al cargar la interfaz del juego: " + ex.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+//Muestra un mensaje de victoria cuando el jugador gana el juego.
+   
+    public void mostrarMensajeVictoria() {
+        JOptionPane.showMessageDialog(this, "¡Felicidades, ganaste el juego!", "Victoria", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+  //Muestra un mensaje genérico en un cuadro de diálogo.
+
+    public void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Mensaje", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+// Actualiza el tiempo restante en el JLabel correspondiente.
+ 
+    public void mostrarTiempo(int segundos) {
+        lblTiempo.setText("Tiempo: " + segundos + "s"); // Actualiza el texto del JLabel.
+    }
+
+//Actualiza el número de vidas restantes en el JLabel correspondiente.
+
+    public void actualizarVidas(int vidas) {
+        lblVidas.setText("Vidas: " + vidas); // Actualiza el texto del JLabel.
+        revalidate(); // Revalida el diseño para reflejar los cambios.
+        repaint(); // Redibuja la ventana para asegurarse de que los cambios sean visibles.
+    }
+
+//Devuelve el panel de juego asociado a esta ventana.
+
+    public PanelJuego getPanelJuego() {
+        return panelJuego;
+    }
+
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+}
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
+
+
